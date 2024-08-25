@@ -66,7 +66,7 @@ def iter_iface_down(device, rootiface):
     )
     ifqueue = [(device, rootiface, default_access_vlan)]
 
-    current_role = current_device.get("device_role").get("slug")
+    current_role = current_device.get("role").get("slug")
     # always iter down to access switches, if we are a a core devices also
     # iterate down into access switches
     down_stream_role = [ROLE_ACCESS_SWITCH]
@@ -77,7 +77,7 @@ def iter_iface_down(device, rootiface):
         dev, iface, default_access_vlan = ifqueue.pop(0)
         remote = iface_get_remote_device(iface)
         if remote:
-            remote_role = remote.get("device_role").get("slug")
+            remote_role = remote.get("role").get("slug")
             # only iter downstream to devices that we know are below us
             if remote_role in down_stream_role and not remote["name"] in visited:
                 visited.add(remote["name"])
@@ -119,7 +119,7 @@ def iter_devices_up(device, distro_only=True):
         device, depth = devqueue.pop(0)
         yield device, depth
 
-        role = device.get("device_role").get("slug")
+        role = device.get("role").get("slug")
         # if not access_switch or distribution_switch core is found
         if role not in [ROLE_ACCESS_SWITCH, ROLE_DISTRIBUTION_SWITCH]:
             return
@@ -143,7 +143,7 @@ def iter_devices_up(device, distro_only=True):
 
 def find_default_vlan(device):
     current_device = nb.dev_by_name(device)[0]
-    role = current_device.get("device_role").get("slug")
+    role = current_device.get("role").get("slug")
     for device, depth in iter_devices_up(device, role == ROLE_DISTRIBUTION_SWITCH):
         vlanid = device["custom_fields"].get("default_access_vlan", None)
         if vlanid is None:
@@ -158,7 +158,7 @@ def iface_get_untagged(device, iface, implicit=True):
     if implicit:
         if iface["type"]["value"] not in ["Link Aggregation Group (LAG)", "Virtual"]:
             current_device = nb.dev_by_name(device)[0]
-            role = current_device.get("device_role").get("slug")
+            role = current_device.get("role").get("slug")
 
             return find_default_vlan(device)
 
@@ -170,7 +170,11 @@ def get_vlans_on_iface(vlans_all, device, iface):
     remote0 = (None,)
 
     current_device = nb.dev_by_name(device)[0]
-    role = current_device.get("device_role").get("slug")
+    #open('/opt/imfcfg/debug.txt', 'w').write(str(current_device))
+        
+    #pprint(current_device)
+
+    role = current_device.get("role").get("slug") #L5 removed this for a test
 
     # walk interace down
     for dev, deviface, remote, default_access_vlan in iter_iface_down(device, iface):
@@ -182,7 +186,7 @@ def get_vlans_on_iface(vlans_all, device, iface):
         if remote is not None and (remote_core := is_facing_core(remote)) is not None:
             for vid in vlans_all:
                 if site.is_vlan_origin(
-                    FakeDevice(remote_core["name"], remote_core["device_role"]["slug"]),
+                    FakeDevice(remote_core["name"], remote_core["role"]["slug"]),
                     vid,
                 ):
                     vlans_root.add(vid)

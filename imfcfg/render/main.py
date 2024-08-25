@@ -90,7 +90,7 @@ class TemplateLoader(jinja2.BaseLoader):
                 while len(rules) > 0:
                     rule = rules.pop(0)
                     match_val = name
-                    if rule in ["device_type", "device_role"]:
+                    if rule in ["device_type", "role"]:
                         match_val = device[rule]["slug"]
                         if len(rules) < 1:
                             sys.stderr.write(

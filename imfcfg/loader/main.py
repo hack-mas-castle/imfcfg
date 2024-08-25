@@ -221,7 +221,7 @@ def loadRouterData(tvars, router):
         else:
             remote = remote[0]
 
-        remote_role = remote.get("device_role").get("slug")
+        remote_role = remote.get("role").get("slug")
 
         if remote_role == ROLE_BORDER_ROUTER and "mlag" not in get_tags(iface):
             ips = nb.ip_by_int_id(iface["id"])

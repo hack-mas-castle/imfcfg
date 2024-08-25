@@ -23,13 +23,14 @@ class Site(object):
 
     def is_vlan_origin(self, device, vid):
         # TODO make it parse from a config file
-        return device.role == "router"
+        #return device.role == "router"
+        return device.role == "distro"
 
     def set_l2vlan(self, vlan):
         self.l2vlan = vlan
 
     def classify_device(self, device):
-        slug = device.get("device_role").get("slug")
+        slug = device.get("role").get("slug")
         if slug == self.ROLE_ACCESS_SWITCH:
             device.role = "access"
         elif slug == self.ROLE_DISTRIBUTION_SWITCH:

@@ -94,7 +94,7 @@ def get_mgmt_vlan(dev):
     # careful with the extra - so we don't match prodoyolocolo
     if "-yolocolo-" in dev["name"]:
         return 3412
-    role = dev["device_role"]["slug"]
+    role = dev["role"]["slug"]
     if role == "distribution-switch":
         return 2225
     elif role == "access-switch":

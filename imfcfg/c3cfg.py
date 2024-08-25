@@ -247,7 +247,7 @@ if __name__ == "__main__":
             for device in devices:
                 if not fnmatch(device["name"], devname):
                     continue
-                if device["device_role"]["slug"] not in ["access-switch", "router"]:
+                if device["role"]["slug"] not in ["access-switch", "router"]:
                     continue
                 name = device["name"]
                 sys.stderr.write("writing %s.conf\n" % (name))
