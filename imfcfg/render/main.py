@@ -28,7 +28,7 @@ def init_template(nb, path=None):
 
 class TemplateLoader(jinja2.BaseLoader):
     target_re = re.compile(
-        "\{#\s*c3cfg:\s*(?P<type>router|switch)\s+(?P<rules>.*)\s+#\}"
+        r"\{#\s*c3cfg:\s*(?P<type>router|switch)\s+(?P<rules>.*)\s+#\}"
     )
     default_role = "router"
     nb = None
