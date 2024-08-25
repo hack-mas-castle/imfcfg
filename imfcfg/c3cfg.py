@@ -220,7 +220,7 @@ if __name__ == "__main__":
         (config.get("global", "username"), config.get("global", "password")),
         args.offline,
         args.trace,
-        cachetime=config.get("global", "cachetime", fallback=15.0),
+        #cachetime=config.get("global", "cachetime", fallback=15.0),
         readonly=args.daemon,
         dbpath=dbpath,
     )
