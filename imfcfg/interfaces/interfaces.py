@@ -96,7 +96,7 @@ class AccessIface(Iface):
         self.untagged = untagged
         self.vlan_all = (
             (iface.get("mode") or {}).get("value", None) == "tagged-all"
-            and len(vlans) == 0
+            # and len(vlans) == 0  # makes no sense to CastleNOC. if mode is set to tagged-all we expect a possible list of VLANS to be ignored
             or ("uplink" in tags)
         )
         self.vlan_names = map(lambda a: "V%d" % a, self._vlans or [])
