@@ -78,7 +78,7 @@ def create_app(nb=None):
         tvars.update(keys=keys)
     with open(f"{db_path}/event-config.json", "r") as stream:
         event_config = json.load(stream)
-        event_config["md5crypt_admin_password"] = hash_password(
+        event_config["crypted_admin_password"] = hash_password(
             event_config["admin_password"], "sha256"
         )
         event_config["md5crypt_admin_password"] = hash_password(
